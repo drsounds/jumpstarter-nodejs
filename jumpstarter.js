@@ -12,8 +12,8 @@ var fs = require('fs');
  * @param {String} path Your development path 
  */
 var Jumpstarter = function (path) {
+	this.devPath = path;
 	this.productionRoot = '/app';
-	this.rootPath = this.isProduction() ? this.productionRoot : path;
 };
 
 Jumpstarter.prototype = {
@@ -35,10 +35,10 @@ Jumpstarter.prototype = {
 	 * 
  	 * @param {String} development_path
 	 */
-	getBaseDirectory: function (dev_path) {
+	getBaseDirectory: function () {
 		var self = this;
 		this.isProduction(function (isProduction) {
-			return isProduction ? self.productionRoot : development_path; 
+			return isProduction ? self.productionRoot : self.devPath; 
 		});
 	},
 	
@@ -47,7 +47,7 @@ Jumpstarter.prototype = {
  	 * @param {String} development_path
 	 */
 	getBaseDirectorySync: function () {
-		return this.isProductionSync() ? this.productionRoot : development_path; 
+		return this.isProductionSync() ? this.productionRoot : self.devPath; 
 	},
 	
 	/***
@@ -106,7 +106,7 @@ Jumpstarter.prototype = {
 	 */
 	
 	loadEnvJSON: function (callback) {
-		fs.readFile(this.getAppDirectory() + '/env.json', function (err, data) {
+		fs.readFile(this.getBaseDirectory() + '/env.json', function (err, data) {
 			var json = JSON.parse(data);
 			callback(data);
 		});
@@ -118,7 +118,7 @@ Jumpstarter.prototype = {
 	 */
 	
 	loadEnvJSONSync: function () {
-		var str = fs.readFileSync(this.getAppDirectory() + '/env.json');
+		var str = fs.readFileSync(this.getBaseDirectory() + '/env.json');
 		var data = JSON.parse(str);
 		return data;
 	},
