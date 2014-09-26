@@ -1,0 +1,8 @@
+{
+  "name": "jumpstarter",
+  "version": "0.0.1",
+  "description": "Jumpstarter environment library for Node.JS",
+  "dependencies": {
+    "fs": "*"
+  }
+}
